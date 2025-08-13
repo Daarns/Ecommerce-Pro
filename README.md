@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Mini Ecommerce
+
+Mini Ecommerce is a modern web application simulating an online store, built with [Next.js](https://nextjs.org/) and [Tailwind CSS](https://tailwindcss.com/).  
+This project demonstrates core e-commerce features such as product search, filtering, wishlist, cart, and an admin dashboard.  
+All product data is based on static dummy data.
+
+---
+
+## Features
+
+- **Product Search** with autocomplete and search history
+- **Product Filtering** (category, price, brand, rating, size, variant)
+- **Responsive Design**: optimized for both desktop and mobile
+- **Wishlist & Cart** (simulation)
+- **Admin Dashboard**: manage products, orders, and customers (dummy)
+- **Sidebar & Mobile Filter**: sidebar filter for desktop, modal filter for mobile
+- **Modern UI** powered by Tailwind CSS
+
+---
+
+## Tech Stack
+
+- [Next.js 14+](https://nextjs.org/)
+- [React](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Lucide React Icons](https://lucide.dev/icons/)
+- Dummy data (no backend)
+
+---
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone this repository:**
+   ```sh
+   git clone https://github.com/USERNAME/mini-ecommerce.git
+   cd mini-ecommerce
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+2. **Install dependencies:**
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Run the development server:**
+   ```sh
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. **Open in your browser:**  
+   [http://localhost:3000](http://localhost:3000)
+
+---
+
+## Folder Structure
+
+```
+app/
+  account/
+    components/
+      AddressBook.jsx
+      ProfileForm.jsx
+      UserDashboard.jsx
+  admin/
+    components/
+      Header.jsx
+      RevenueCart.jsx
+    dashboard/
+      customers/
+        CustomerList.jsx
+      orders/
+        OrderList.jsx
+      products/
+        ProductList.jsx
+      page.jsx
+    sidebar.jsx
+    layout.jsx
+  components/
+    cart/
+      CartSidebar.jsx
+    navigation/
+      Header.jsx
+      Footer.jsx
+    ui/
+      Breadcrumb.jsx
+      Button.jsx
+  data/
+    dummy-data.js
+  orders/
+    [id]/
+      components/
+        OrderDetail.jsx
+  products/
+    components/
+      FilterSidebar.jsx
+      MobilefilterModal.jsx
+      ProductGrid.jsx
+      SearchBar.jsx
+    page.jsx
+  globals.css
+public/
+...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Notes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- All product, category, and user data is **dummy/static**.
+- Checkout, login, and payment features are for simulation only (no backend integration).
+- Admin dashboard is for UI demonstration (no real CRUD operations).
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+MIT License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+© 2025 Daarns. All rights reserved.
