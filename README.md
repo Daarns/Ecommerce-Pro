@@ -32,7 +32,7 @@ All product data is based on static dummy data.
 
 1. **Clone this repository:**
    ```sh
-   git clone https://github.com/USERNAME/mini-ecommerce.git
+   git clone https://github.com/Daarns/mini-ecommerce.git
    cd mini-ecommerce
    ```
 
@@ -112,12 +112,6 @@ public/
 - All product, category, and user data is **dummy/static**.
 - Checkout, login, and payment features are for simulation only (no backend integration).
 - Admin dashboard is for UI demonstration (no real CRUD operations).
-
----
-
-## License
-
-MIT License
 
 ---
 
