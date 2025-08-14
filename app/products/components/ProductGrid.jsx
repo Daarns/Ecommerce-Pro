@@ -1,10 +1,17 @@
 "use client";
-import { useState } from "react";
-import { ProductCard } from "@/app/components/ui/ProductCard";
-import { Grid, List, Filter, ChevronDown, Eye, EyeOff } from "lucide-react";
-import { MobileFilterModal } from "./MobileFilterModal";
+import {useState} from "react";
+import {ProductCard} from "@/app/components/ui/ProductCard";
+import {Grid, List, Filter, ChevronDown, Eye, EyeOff} from "lucide-react";
+import {MobileFilterModal} from "./MobileFilterModal";
 
-export function ProductGrid({ products, filters = {}, category, onToggleSidebar, sidebarVisible, onFiltersChange }) {
+export function ProductGrid({
+  products,
+  filters = {},
+  category,
+  onToggleSidebar,
+  sidebarVisible,
+  onFiltersChange,
+}) {
   const [viewMode, setViewMode] = useState("grid");
   const [sortBy, setSortBy] = useState("featured");
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
@@ -13,31 +20,47 @@ export function ProductGrid({ products, filters = {}, category, onToggleSidebar,
   // Filter products with defensive checks
   const filteredProducts = products.filter((product) => {
     // Jika tidak ada filter apapun, tampilkan semua produk
-    const hasAnyFilters = (
-      (filters.categories && Array.isArray(filters.categories) && filters.categories.length > 0) ||
-      (filters.selectedPriceRange) ||
+    const hasAnyFilters =
+      (filters.categories &&
+        Array.isArray(filters.categories) &&
+        filters.categories.length > 0) ||
+      filters.selectedPriceRange ||
       (filters.rating && filters.rating > 0) ||
-      (filters.sizes && Array.isArray(filters.sizes) && filters.sizes.length > 0) ||
-      (filters.brands && Array.isArray(filters.brands) && filters.brands.length > 0) ||
-      (filters.variants && Array.isArray(filters.variants) && filters.variants.length > 0) ||
-      category
-    );
-    
+      (filters.sizes &&
+        Array.isArray(filters.sizes) &&
+        filters.sizes.length > 0) ||
+      (filters.brands &&
+        Array.isArray(filters.brands) &&
+        filters.brands.length > 0) ||
+      (filters.variants &&
+        Array.isArray(filters.variants) &&
+        filters.variants.length > 0) ||
+      category;
+
     if (!hasAnyFilters) {
       return true;
     }
 
     // Filter kategori dengan normalisasi case
-    if (filters.categories && Array.isArray(filters.categories) && filters.categories.length > 0) {
-      const productCategory = product.category?.toLowerCase() || '';
+    if (
+      filters.categories &&
+      Array.isArray(filters.categories) &&
+      filters.categories.length > 0
+    ) {
+      const productCategory = product.category?.toLowerCase() || "";
       if (!filters.categories.includes(productCategory)) {
         return false;
       }
     }
-    
+
     // Jika ada category dari URL tapi tidak ada filter categories, filter berdasarkan URL category
-    if (category && (!filters.categories || !Array.isArray(filters.categories) || filters.categories.length === 0)) {
-      const productCategory = product.category?.toLowerCase() || '';
+    if (
+      category &&
+      (!filters.categories ||
+        !Array.isArray(filters.categories) ||
+        filters.categories.length === 0)
+    ) {
+      const productCategory = product.category?.toLowerCase() || "";
       const urlCategory = category.toLowerCase();
       if (productCategory !== urlCategory) {
         return false;
@@ -45,81 +68,103 @@ export function ProductGrid({ products, filters = {}, category, onToggleSidebar,
     }
 
     // Filter harga dengan defensive checks
-    if (filters.selectedPriceRange && 
-        filters.priceRange && 
-        Array.isArray(filters.priceRange) && 
-        filters.priceRange.length === 2 &&
-        typeof filters.priceRange[0] === 'number' &&
-        typeof filters.priceRange[1] === 'number') {
-      if (product.price < filters.priceRange[0] || product.price > filters.priceRange[1]) {
+    if (
+      filters.selectedPriceRange &&
+      filters.priceRange &&
+      Array.isArray(filters.priceRange) &&
+      filters.priceRange.length === 2 &&
+      typeof filters.priceRange[0] === "number" &&
+      typeof filters.priceRange[1] === "number"
+    ) {
+      if (
+        product.price < filters.priceRange[0] ||
+        product.price > filters.priceRange[1]
+      ) {
         return false;
       }
     }
-    
+
     // Filter rating
     if (filters.rating && filters.rating > 0) {
       if (Math.floor(product.rating || 0) < filters.rating) {
         return false;
       }
     }
-    
+
     // Filter sizes
-    if (filters.sizes && Array.isArray(filters.sizes) && filters.sizes.length > 0 && 
-        product.sizes && Array.isArray(product.sizes)) {
+    if (
+      filters.sizes &&
+      Array.isArray(filters.sizes) &&
+      filters.sizes.length > 0 &&
+      product.sizes &&
+      Array.isArray(product.sizes)
+    ) {
       const availableSizes = product.sizes.map((s) => s?.value).filter(Boolean);
       if (!filters.sizes.some((size) => availableSizes.includes(size))) {
         return false;
       }
     }
-    
+
     // Filter brands dengan penanganan yang lebih robust
-    if (filters.brands && Array.isArray(filters.brands) && filters.brands.length > 0) {
+    if (
+      filters.brands &&
+      Array.isArray(filters.brands) &&
+      filters.brands.length > 0
+    ) {
       let hasMatchingBrand = false;
-      
+
       // Cek brand property
       if (product.brand) {
         const productBrand = product.brand.toLowerCase();
         hasMatchingBrand = filters.brands.includes(productBrand);
       }
-      
+
       // Jika tidak ada brand property atau tidak match, cek dari nama produk
       if (!hasMatchingBrand && product.name) {
         const productName = product.name.toLowerCase();
-        hasMatchingBrand = filters.brands.some(brand => 
+        hasMatchingBrand = filters.brands.some((brand) =>
           productName.includes(brand.toLowerCase())
         );
       }
-      
+
       if (!hasMatchingBrand) {
         return false;
       }
     }
-    
+
     // Filter variants dengan defensive checks
-    if (filters.variants && Array.isArray(filters.variants) && filters.variants.length > 0) {
+    if (
+      filters.variants &&
+      Array.isArray(filters.variants) &&
+      filters.variants.length > 0
+    ) {
       if (!product.variants || !Array.isArray(product.variants)) {
         return false;
       }
-      
-      const availableVariants = product.variants.map((v) => {
-        if (typeof v === 'string') return v.toLowerCase();
-        if (v && v.value) return v.value.toLowerCase();
-        if (v && v.name) return v.name.toLowerCase();
-        return '';
-      }).filter(Boolean);
-      
+
+      const availableVariants = product.variants
+        .map((v) => {
+          if (typeof v === "string") return v.toLowerCase();
+          if (v && v.value) return v.value.toLowerCase();
+          if (v && v.name) return v.name.toLowerCase();
+          return "";
+        })
+        .filter(Boolean);
+
       const hasMatchingVariant = filters.variants.some((variant) => {
         const filterVariant = variant.toLowerCase();
-        return availableVariants.some(available => 
-          available.includes(filterVariant) || filterVariant.includes(available)
+        return availableVariants.some(
+          (available) =>
+            available.includes(filterVariant) ||
+            filterVariant.includes(available)
         );
       });
-      
+
       if (!hasMatchingVariant) {
         return false;
       }
     }
-    
+
     return true;
   });
 
@@ -140,11 +185,11 @@ export function ProductGrid({ products, filters = {}, category, onToggleSidebar,
   });
 
   const sortOptions = [
-    { value: "featured", label: "Featured" },
-    { value: "newest", label: "Newest" },
-    { value: "price-low", label: "Price: Low to High" },
-    { value: "price-high", label: "Price: High to Low" },
-    { value: "rating", label: "Highest Rated" }
+    {value: "featured", label: "Featured"},
+    {value: "newest", label: "Newest"},
+    {value: "price-low", label: "Price: Low to High"},
+    {value: "price-high", label: "Price: High to Low"},
+    {value: "rating", label: "Highest Rated"},
   ];
 
   const handleSortSelect = (value) => {
@@ -190,9 +235,14 @@ export function ProductGrid({ products, filters = {}, category, onToggleSidebar,
           >
             <Filter className="w-4 h-4" />
             <span className="text-sm">Filters</span>
-            {Object.values(filters).some(f => 
-              (Array.isArray(f) && f.length > 0) || 
-              (f && typeof f !== 'object' && f !== 0 && f !== null && f !== '')
+            {Object.values(filters).some(
+              (f) =>
+                (Array.isArray(f) && f.length > 0) ||
+                (f &&
+                  typeof f !== "object" &&
+                  f !== 0 &&
+                  f !== null &&
+                  f !== "")
             ) && (
               <span className="ml-1 px-1.5 py-0.5 bg-primary text-white text-xs rounded-full">
                 •
@@ -207,10 +257,12 @@ export function ProductGrid({ products, filters = {}, category, onToggleSidebar,
               className="flex items-center justify-between gap-2 px-4 py-2 bg-surface border border-border rounded-xl text-text-primary hover:bg-surface-elevated transition-colors min-w-[140px]"
             >
               <span className="text-sm">
-                {sortOptions.find(opt => opt.value === sortBy)?.label}
+                {sortOptions.find((opt) => opt.value === sortBy)?.label}
               </span>
-              <ChevronDown 
-                className={`w-4 h-4 transition-transform ${sortDropdownOpen ? 'rotate-180' : ''}`} 
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${
+                  sortDropdownOpen ? "rotate-180" : ""
+                }`}
               />
             </button>
 
@@ -218,11 +270,11 @@ export function ProductGrid({ products, filters = {}, category, onToggleSidebar,
             {sortDropdownOpen && (
               <>
                 {/* Backdrop */}
-                <div 
+                <div
                   className="fixed inset-0 z-10"
                   onClick={() => setSortDropdownOpen(false)}
                 />
-                
+
                 {/* Dropdown Content */}
                 <div className="absolute top-full right-0 mt-2 w-48 bg-surface border border-border rounded-xl shadow-lg z-20 py-2">
                   {sortOptions.map((option) => (
@@ -230,9 +282,9 @@ export function ProductGrid({ products, filters = {}, category, onToggleSidebar,
                       key={option.value}
                       onClick={() => handleSortSelect(option.value)}
                       className={`w-full px-4 py-2 text-left text-sm transition-colors hover:bg-surface-elevated ${
-                        sortBy === option.value 
-                          ? 'text-primary bg-primary/5' 
-                          : 'text-text-primary'
+                        sortBy === option.value
+                          ? "text-primary bg-primary/5"
+                          : "text-text-primary"
                       }`}
                     >
                       {option.label}
@@ -280,14 +332,19 @@ export function ProductGrid({ products, filters = {}, category, onToggleSidebar,
 
       {/* Products Grid */}
       <div
-        className={`grid gap-6 ${
+        className={`grid gap-3 sm:gap-6 ${
           viewMode === "grid"
-            ? "grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+            ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
             : "grid-cols-1"
         }`}
       >
         {sortedProducts.map((product) => (
-          <ProductCard key={product.id} product={product} viewMode={viewMode} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            viewMode={viewMode}
+            className="sm:p-4 p-2" // Add padding control for mobile
+          />
         ))}
       </div>
 
