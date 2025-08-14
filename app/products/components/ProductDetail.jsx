@@ -12,12 +12,12 @@ import {
   RotateCcw,
   Check,
   X,
-  Info
+  Info,
 } from "lucide-react";
 import {Button} from "@/app/components/ui/Button";
 import {formatPrice} from "@/app/lib/utils";
 import {useCart} from "@/app/contexts/CartContext";
-import { getCategoryInfo, categoryHasSizes } from '@/app/data/dummy-data'
+import {getCategoryInfo, categoryHasSizes} from "@/app/data/dummy-data";
 
 export function ProductDetail({product}) {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -34,8 +34,8 @@ export function ProductDetail({product}) {
   const {addToCart} = useCart();
 
   // Check if this category has sizes or variants
-  const categoryInfo = getCategoryInfo(product.category)
-  const hasSizes = categoryHasSizes(product.category)
+  const categoryInfo = getCategoryInfo(product.category);
+  const hasSizes = categoryHasSizes(product.category);
 
   // Mock additional images (in real app, this would come from product data)
   const images = [product.image, product.image, product.image, product.image];
@@ -43,16 +43,16 @@ export function ProductDetail({product}) {
   // Initialize selected variant if product has variants
   useEffect(() => {
     if (product.variants && product.variants.length > 0 && !selectedVariant) {
-      setSelectedVariant(product.variants[0])
+      setSelectedVariant(product.variants[0]);
     }
-  }, [product.variants, selectedVariant])
+  }, [product.variants, selectedVariant]);
 
   // Initialize selected color if product has colors
   useEffect(() => {
     if (product.colors && product.colors.length > 0 && !selectedColor) {
-      setSelectedColor(product.colors[0])
+      setSelectedColor(product.colors[0]);
     }
-  }, [product.colors, selectedColor])
+  }, [product.colors, selectedColor]);
 
   useEffect(() => {
     // Cek apakah produk sudah ada di wishlist saat komponen mount/produk berubah
@@ -84,39 +84,46 @@ export function ProductDetail({product}) {
   // Get available stock based on selected options
   const getAvailableStock = () => {
     if (hasSizes && selectedSize && product.sizes) {
-      const sizeOption = product.sizes.find(s => s.value === selectedSize)
-      return sizeOption ? sizeOption.stock : 0
+      const sizeOption = product.sizes.find((s) => s.value === selectedSize);
+      return sizeOption ? sizeOption.stock : 0;
     }
-    
+
     if (selectedVariant && product.variants) {
-      const variantOption = product.variants.find(v => v.value === selectedVariant.value)
-      return variantOption ? variantOption.stock : 0
+      const variantOption = product.variants.find(
+        (v) => v.value === selectedVariant.value
+      );
+      return variantOption ? variantOption.stock : 0;
     }
-    
-    return product.stock
-  }
+
+    return product.stock;
+  };
 
   // Get sizes based on category
   const getProductSizes = () => {
-    if (product.sizes) return product.sizes
-    
+    if (product.sizes) return product.sizes;
+
     // Fallback mock sizes if not in product data
     if (hasSizes) {
-      if (product.subcategory === 'Shoes') {
-        return ['36', '37', '38', '39', '40', '41', '42', '43', '44'].map(size => ({ value: size, stock: 5 }))
+      if (product.subcategory === "Shoes") {
+        return ["36", "37", "38", "39", "40", "41", "42", "43", "44"].map(
+          (size) => ({value: size, stock: 5})
+        );
       } else {
-        return ['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => ({ value: size, stock: 3 }))
+        return ["XS", "S", "M", "L", "XL", "XXL"].map((size) => ({
+          value: size,
+          stock: 3,
+        }));
       }
     }
-    
-    return []
-  }
+
+    return [];
+  };
 
   // Get colors from product or fallback
   const getProductColors = () => {
-    if (product.colors) return product.colors
-    return ['Black', 'White', 'Gray', 'Navy'] // Fallback colors
-  }
+    if (product.colors) return product.colors;
+    return ["Black", "White", "Gray", "Navy"]; // Fallback colors
+  };
 
   const getDiscountPercentage = () => {
     if (product.originalPrice) {
@@ -128,8 +135,8 @@ export function ProductDetail({product}) {
   };
 
   const handleQuantityChange = (action) => {
-    const maxStock = getAvailableStock()
-    
+    const maxStock = getAvailableStock();
+
     if (action === "increase") {
       setQuantity((prev) => Math.min(prev + 1, maxStock));
     } else if (action === "decrease") {
@@ -147,14 +154,14 @@ export function ProductDetail({product}) {
     const cartItemData = {
       quantity,
       color: selectedColor,
-    }
+    };
 
     // Add size or variant based on product type
     if (hasSizes && selectedSize) {
-      cartItemData.size = selectedSize
+      cartItemData.size = selectedSize;
     } else if (selectedVariant) {
-      cartItemData.variant = selectedVariant.value
-      cartItemData.variantType = selectedVariant.type
+      cartItemData.variant = selectedVariant.value;
+      cartItemData.variantType = selectedVariant.type;
     }
 
     addToCart(product, cartItemData);
@@ -169,15 +176,16 @@ export function ProductDetail({product}) {
   // Check if can add to cart
   const canAddToCart = () => {
     // Check stock
-    if (getAvailableStock() === 0) return false
-    
+    if (getAvailableStock() === 0) return false;
+
     // Check required selections
-    if (hasSizes && !selectedSize) return false
-    if (product.variants && product.variants.length > 0 && !selectedVariant) return false
-    if (getProductColors().length > 0 && !selectedColor) return false
-    
-    return true
-  }
+    if (hasSizes && !selectedSize) return false;
+    if (product.variants && product.variants.length > 0 && !selectedVariant)
+      return false;
+    if (getProductColors().length > 0 && !selectedColor) return false;
+
+    return true;
+  };
 
   const handleQuantityClick = () => {
     setEditingQuantity(true);
@@ -191,7 +199,7 @@ export function ProductDetail({product}) {
 
   const handleQuantitySave = () => {
     const newQuantity = parseInt(tempQuantity) || 1;
-    const maxStock = getAvailableStock()
+    const maxStock = getAvailableStock();
     const finalQuantity = Math.min(Math.max(newQuantity, 1), maxStock);
     setQuantity(finalQuantity);
     setEditingQuantity(false);
@@ -217,25 +225,27 @@ export function ProductDetail({product}) {
 
   // Get validation messages
   const getValidationMessage = () => {
-    const missing = []
-    
-    if (hasSizes && !selectedSize) missing.push('size')
+    const missing = [];
+
+    if (hasSizes && !selectedSize) missing.push("size");
     if (product.variants && product.variants.length > 0 && !selectedVariant) {
-      missing.push(product.variants[0].type === 'storage' ? 'storage option' : 'variant')
+      missing.push(
+        product.variants[0].type === "storage" ? "storage option" : "variant"
+      );
     }
-    if (getProductColors().length > 0 && !selectedColor) missing.push('color')
-    
-    if (missing.length === 0) return null
-    
-    return `Please select ${missing.join(' and ')} before adding to cart.`
-  }
+    if (getProductColors().length > 0 && !selectedColor) missing.push("color");
+
+    if (missing.length === 0) return null;
+
+    return `Please select ${missing.join(" and ")} before adding to cart.`;
+  };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
       {/* Product Images */}
-      <div className="space-y-4">
+      <div className="space-y-3 lg:space-y-4">
         {/* Main Image */}
-        <div className="aspect-square rounded-2xl overflow-hidden bg-surface">
+        <div className="aspect-square rounded-xl lg:rounded-2xl overflow-hidden bg-surface">
           <Image
             src={images[selectedImage]}
             alt={product.name}
@@ -252,7 +262,7 @@ export function ProductDetail({product}) {
             <button
               key={index}
               onClick={() => setSelectedImage(index)}
-              className={`aspect-square rounded-xl overflow-hidden border-2 transition-all ${
+              className={`aspect-square rounded-lg lg:rounded-xl overflow-hidden border-2 transition-all ${
                 selectedImage === index
                   ? "border-primary ring-2 ring-primary/20"
                   : "border-border hover:border-border/60"
@@ -271,31 +281,31 @@ export function ProductDetail({product}) {
       </div>
 
       {/* Product Information */}
-      <div className="space-y-6">
+      <div className="space-y-4 lg:space-y-6">
         {/* Header */}
         <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full">
+          <div className="flex items-center flex-wrap gap-2 mb-2">
+            <span className="px-2 lg:px-3 py-1 bg-primary/10 text-primary text-xs lg:text-sm font-medium rounded-full">
               {product.category}
             </span>
             {product.isNew && (
-              <span className="px-3 py-1 bg-success/10 text-success text-sm font-medium rounded-full">
+              <span className="px-2 lg:px-3 py-1 bg-success/10 text-success text-xs lg:text-sm font-medium rounded-full">
                 NEW
               </span>
             )}
             {product.bestSeller && (
-              <span className="px-3 py-1 bg-accent/10 text-accent text-sm font-medium rounded-full">
+              <span className="px-2 lg:px-3 py-1 bg-accent/10 text-accent text-xs lg:text-sm font-medium rounded-full">
                 BESTSELLER
               </span>
             )}
           </div>
 
-          <h1 className="text-2xl lg:text-3xl font-bold text-text-primary mb-4">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-text-primary mb-3 lg:mb-4 leading-tight">
             {product.name}
           </h1>
 
           {/* Rating */}
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-3 lg:mb-4">
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (
                 <Star
@@ -313,25 +323,31 @@ export function ProductDetail({product}) {
             </span>
           </div>
 
-          {/* Price */}
-          <div className="flex items-baseline gap-3 mb-6">
-            <span className="text-3xl font-bold text-text-primary">
-              {formatPrice(product.price)}
-            </span>
+          {/* Price - Mobile Optimized */}
+          <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-3 mb-4 lg:mb-6">
             {product.originalPrice && (
-              <>
-                <span className="text-xl text-text-muted line-through">
+              <div className="flex flex-col sm:flex-row sm:items-baseline gap-1">
+                <span className="text-sm sm:text-lg text-text-muted line-through">
                   {formatPrice(product.originalPrice)}
                 </span>
-                <span className="px-2 py-1 bg-error text-white text-sm font-bold rounded">
+              </div>
+            )}
+
+            <div className="flex items-center gap-2">
+              <span className="text-2xl sm:text-3xl font-bold text-text-primary">
+                {formatPrice(product.price)}
+              </span>
+
+              {product.originalPrice && (
+                <span className="px-1.5 py-0.5 bg-error text-white text-xs font-bold rounded">
                   -{getDiscountPercentage()}%
                 </span>
-              </>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Stock Status */}
-          <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center gap-2 mb-4 lg:mb-6">
             <div
               className={`w-3 h-3 rounded-full ${
                 getAvailableStock() > 10
@@ -360,7 +376,7 @@ export function ProductDetail({product}) {
         </div>
 
         {/* Product Options */}
-        <div className="space-y-6">
+        <div className="space-y-4 lg:space-y-6">
           {/* Color Selection */}
           {getProductColors().length > 0 && (
             <div>
@@ -372,7 +388,7 @@ export function ProductDetail({product}) {
                   <button
                     key={color}
                     onClick={() => setSelectedColor(color)}
-                    className={`px-4 py-2 border rounded-xl text-sm font-medium transition-all ${
+                    className={`px-3 lg:px-4 py-2 border rounded-lg lg:rounded-xl text-sm font-medium transition-all ${
                       selectedColor === color
                         ? "border-primary bg-primary text-white"
                         : "border-border text-text-secondary hover:border-primary hover:text-primary"
@@ -385,7 +401,7 @@ export function ProductDetail({product}) {
             </div>
           )}
 
-          {/* Size Selection - Only show for categories that have sizes */}
+          {/* Size Selection - Mobile Optimized Grid */}
           {hasSizes && getProductSizes().length > 0 && (
             <div>
               <h3 className="text-sm font-semibold text-text-primary mb-3">
@@ -418,19 +434,25 @@ export function ProductDetail({product}) {
                 <div className="mt-2 flex items-center gap-2">
                   <Info className="w-4 h-4 text-text-muted" />
                   <p className="text-sm text-text-secondary">
-                    Size {selectedSize}: {getProductSizes().find(s => s.value === selectedSize)?.stock || 0} available
+                    Size {selectedSize}:{" "}
+                    {getProductSizes().find((s) => s.value === selectedSize)
+                      ?.stock || 0}{" "}
+                    available
                   </p>
                 </div>
               )}
             </div>
           )}
 
-          {/* Variant Selection - For categories without sizes but with variants */}
+          {/* Variant Selection - Mobile Optimized */}
           {!hasSizes && product.variants && product.variants.length > 0 && (
             <div>
               <h3 className="text-sm font-semibold text-text-primary mb-3">
-                {product.variants[0].type === 'storage' ? 'Storage' : 
-                 product.variants[0].type === 'edition' ? 'Edition' : 'Variant'}
+                {product.variants[0].type === "storage"
+                  ? "Storage"
+                  : product.variants[0].type === "edition"
+                  ? "Edition"
+                  : "Variant"}
                 {!selectedVariant && <span className="text-error">*</span>}
               </h3>
               <div className="space-y-2">
@@ -439,18 +461,26 @@ export function ProductDetail({product}) {
                     key={variant.value}
                     onClick={() => setSelectedVariant(variant)}
                     disabled={variant.stock === 0}
-                    className={`w-full p-3 text-left border-2 rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+                    className={`relative w-full p-3 text-left border-2 rounded-lg lg:rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
                       selectedVariant?.value === variant.value
-                        ? 'border-primary bg-primary text-white'
+                        ? "border-primary bg-primary text-white"
                         : variant.stock > 0
-                        ? 'border-border text-text-secondary hover:border-primary hover:text-primary'
-                        : 'border-border text-text-muted'
+                        ? "border-border text-text-secondary hover:border-primary hover:text-primary"
+                        : "border-border text-text-muted"
+                    } ${
+                      variant.stock === 0
+                        ? "after:content-[''] after:absolute after:top-1/2 after:left-2 after:right-2 after:h-0.5 after:bg-red-500 after:transform after:-translate-y-1/2 after:rotate-12"
+                        : ""
                     }`}
                   >
                     <div className="flex justify-between items-center">
-                      <span className="font-medium">{variant.value}</span>
-                      <span className="text-sm opacity-75">
-                        {variant.stock > 0 ? `${variant.stock} available` : 'Out of stock'}
+                      <span className="font-medium text-sm lg:text-base">
+                        {variant.value}
+                      </span>
+                      <span className="text-xs lg:text-sm opacity-75">
+                        {variant.stock > 0
+                          ? `${variant.stock} left`
+                          : "Out of stock"}
                       </span>
                     </div>
                   </button>
@@ -459,17 +489,17 @@ export function ProductDetail({product}) {
             </div>
           )}
 
-          {/* Quantity */}
+          {/* Quantity - Mobile Optimized */}
           <div>
             <h3 className="text-sm font-semibold text-text-primary mb-3">
               Quantity
             </h3>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center border border-border rounded-xl">
+            <div className="flex items-center justify-between sm:justify-start sm:gap-4">
+              <div className="flex items-center border border-border rounded-lg lg:rounded-xl">
                 <button
                   onClick={() => handleQuantityChange("decrease")}
                   disabled={quantity <= 1}
-                  className="p-3 hover:bg-surface-elevated transition-colors disabled:opacity-50"
+                  className="p-2.5 lg:p-3 hover:bg-surface-elevated transition-colors disabled:opacity-50"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
@@ -482,14 +512,14 @@ export function ProductDetail({product}) {
                     onChange={(e) => handleQuantityInputChange(e.target.value)}
                     onBlur={handleQuantityInputBlur}
                     onKeyDown={handleQuantityInputKeyDown}
-                    className="w-20 py-3 text-text-primary font-medium text-center bg-transparent focus:outline-none focus:bg-background/50 rounded"
+                    className="w-16 lg:w-20 py-2.5 lg:py-3 text-text-primary font-medium text-center bg-transparent focus:outline-none focus:bg-background/50 rounded"
                     autoFocus
                     maxLength="3"
                   />
                 ) : (
                   <button
                     onClick={handleQuantityClick}
-                    className="px-4 py-3 text-text-primary font-medium min-w-[5rem] text-center hover:bg-surface-elevated transition-colors rounded"
+                    className="px-3 lg:px-4 py-2.5 lg:py-3 text-text-primary font-medium min-w-[4rem] lg:min-w-[5rem] text-center hover:bg-surface-elevated transition-colors rounded"
                     title="Click to edit quantity"
                   >
                     {quantity}
@@ -499,49 +529,59 @@ export function ProductDetail({product}) {
                 <button
                   onClick={() => handleQuantityChange("increase")}
                   disabled={quantity >= getAvailableStock()}
-                  className="p-3 hover:bg-surface-elevated transition-colors disabled:opacity-50"
+                  className="p-2.5 lg:p-3 hover:bg-surface-elevated transition-colors disabled:opacity-50"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
-              <span className="text-text-secondary text-sm">
+              <span className="text-text-secondary text-xs lg:text-sm">
                 {getAvailableStock()} items available
               </span>
             </div>
           </div>
         </div>
 
-        {/* Selection Summary */}
+        {/* Selection Summary - Mobile Optimized */}
         {(selectedSize || selectedVariant || selectedColor) && (
-          <div className="p-4 bg-surface-elevated rounded-xl border border-border">
-            <h4 className="font-medium text-text-primary mb-2">Your Selection:</h4>
-            <div className="space-y-1 text-sm text-text-secondary">
+          <div className="p-3 lg:p-4 bg-surface-elevated rounded-lg lg:rounded-xl border border-border">
+            <h4 className="font-medium text-text-primary mb-2 text-sm lg:text-base">
+              Your Selection:
+            </h4>
+            <div className="space-y-1 text-xs lg:text-sm text-text-secondary">
               {selectedColor && (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between">
                   <span>Color:</span>
-                  <span className="font-medium text-text-primary">{selectedColor}</span>
+                  <span className="font-medium text-text-primary">
+                    {selectedColor}
+                  </span>
                 </div>
               )}
               {selectedSize && (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between">
                   <span>Size:</span>
-                  <span className="font-medium text-text-primary">{selectedSize}</span>
+                  <span className="font-medium text-text-primary">
+                    {selectedSize}
+                  </span>
                 </div>
               )}
               {selectedVariant && (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between">
                   <span>{selectedVariant.type}:</span>
-                  <span className="font-medium text-text-primary">{selectedVariant.value}</span>
+                  <span className="font-medium text-text-primary">
+                    {selectedVariant.value}
+                  </span>
                 </div>
               )}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-between">
                 <span>Quantity:</span>
-                <span className="font-medium text-text-primary">{quantity}</span>
+                <span className="font-medium text-text-primary">
+                  {quantity}
+                </span>
               </div>
               <div className="pt-2 border-t border-border/50">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between">
                   <span>Total:</span>
-                  <span className="font-bold text-text-primary text-lg">
+                  <span className="font-bold text-text-primary text-base lg:text-lg">
                     {formatPrice(product.price * quantity)}
                   </span>
                 </div>
@@ -550,12 +590,12 @@ export function ProductDetail({product}) {
           </div>
         )}
 
-        {/* Action Buttons */}
-        <div className="flex gap-4">
+        {/* Action Buttons - Mobile Optimized */}
+        <div className="flex gap-3 lg:gap-4">
           <Button
             onClick={handleAddToCart}
             disabled={!canAddToCart() || isAdding}
-            className={`flex-1 h-12 transition-all ${
+            className={`flex-1 h-11 lg:h-12 text-sm lg:text-base transition-all ${
               showSuccess
                 ? "bg-success hover:bg-success text-white"
                 : "bg-primary hover:bg-primary-hover text-white"
@@ -568,19 +608,30 @@ export function ProductDetail({product}) {
             ) : (
               <ShoppingCart className="w-4 h-4 mr-2" />
             )}
-            {isAdding
-              ? "Adding..."
-              : showSuccess
-              ? "Added to Cart!"
-              : getAvailableStock() === 0
-              ? "Out of Stock"
-              : "Add to Cart"}
+            <span className="hidden sm:inline">
+              {isAdding
+                ? "Adding..."
+                : showSuccess
+                ? "Added to Cart!"
+                : getAvailableStock() === 0
+                ? "Out of Stock"
+                : "Add to Cart"}
+            </span>
+            <span className="sm:hidden">
+              {isAdding
+                ? "Adding..."
+                : showSuccess
+                ? "Added!"
+                : getAvailableStock() === 0
+                ? "Sold Out"
+                : "Add"}
+            </span>
           </Button>
 
           <Button
             variant="outline"
             onClick={handleWishlist}
-            className={`h-12 px-4 ${
+            className={`h-11 lg:h-12 px-3 lg:px-4 ${
               isWishlisted
                 ? "border-error text-error hover:bg-error hover:text-white"
                 : "border-border text-text-secondary hover:text-text-primary"
@@ -594,87 +645,93 @@ export function ProductDetail({product}) {
           </Button>
         </div>
 
-        {/* Option Validation Message */}
+        {/* Option Validation Message - Mobile Optimized */}
         {!canAddToCart() && getAvailableStock() > 0 && (
-          <div className="p-3 bg-warning/10 border border-warning/20 rounded-xl">
+          <div className="p-3 bg-warning/10 border border-warning/20 rounded-lg lg:rounded-xl">
             <div className="flex items-start gap-2">
               <Info className="w-4 h-4 text-warning mt-0.5 flex-shrink-0" />
-              <p className="text-sm text-warning">
+              <p className="text-xs lg:text-sm text-warning">
                 {getValidationMessage()}
               </p>
             </div>
           </div>
         )}
 
-        {/* Benefits */}
-        <div className="space-y-3 pt-6 border-t border-border">
+        {/* Benefits - Mobile Optimized */}
+        <div className="space-y-2 lg:space-y-3 pt-4 lg:pt-6 border-t border-border">
           <div className="flex items-center gap-3 text-text-secondary">
-            <Truck className="w-4 h-4 text-primary" />
-            <span className="text-sm">
+            <Truck className="w-4 h-4 text-primary flex-shrink-0" />
+            <span className="text-xs lg:text-sm">
               Free shipping on orders over Rp 500K
             </span>
           </div>
           <div className="flex items-center gap-3 text-text-secondary">
-            <Shield className="w-4 h-4 text-primary" />
-            <span className="text-sm">1 year warranty included</span>
+            <Shield className="w-4 h-4 text-primary flex-shrink-0" />
+            <span className="text-xs lg:text-sm">1 year warranty included</span>
           </div>
           <div className="flex items-center gap-3 text-text-secondary">
-            <RotateCcw className="w-4 h-4 text-primary" />
-            <span className="text-sm">30-day return policy</span>
+            <RotateCcw className="w-4 h-4 text-primary flex-shrink-0" />
+            <span className="text-xs lg:text-sm">30-day return policy</span>
           </div>
         </div>
 
-        {/* Product Description */}
-        <div className="pt-6 border-t border-border">
-          <h3 className="text-lg font-semibold text-text-primary mb-3">
+        {/* Product Description - Mobile Optimized */}
+        <div className="pt-4 lg:pt-6 border-t border-border">
+          <h3 className="text-base lg:text-lg font-semibold text-text-primary mb-3">
             Description
           </h3>
-          <div className="prose prose-sm max-w-none text-text-secondary">
-            <p>
+          <div className="prose prose-sm max-w-none text-text-secondary text-sm lg:text-base">
+            <p className="mb-3">
               Experience premium quality with the {product.name}. This carefully
               crafted product combines modern design with exceptional
               functionality, making it perfect for everyday use.
             </p>
-            <p>
+            <p className="mb-3">
               Features include high-quality materials, attention to detail, and
               a design that stands the test of time. Whether you're looking for
               style, comfort, or performance, this product delivers on all
               fronts.
             </p>
-            
+
             {/* Category-specific features */}
             {hasSizes && (
-              <p>
-                Available in multiple sizes to ensure the perfect fit. Each size 
-                is carefully crafted to maintain the same quality and design standards.
+              <p className="mb-3">
+                Available in multiple sizes to ensure the perfect fit. Each size
+                is carefully crafted to maintain the same quality and design
+                standards.
               </p>
             )}
-            
+
             {categoryInfo?.hasVariants && !hasSizes && (
-              <p>
-                Available in different {product.variants?.[0]?.type || 'variants'} to 
-                meet your specific needs and preferences.
+              <p className="mb-3">
+                Available in different{" "}
+                {product.variants?.[0]?.type || "variants"} to meet your
+                specific needs and preferences.
               </p>
             )}
           </div>
         </div>
 
-        {/* Category Info */}
-        <div className="pt-6 border-t border-border">
-          <div className="flex items-center justify-between text-sm">
+        {/* Category Info - Mobile Optimized */}
+        <div className="pt-4 lg:pt-6 border-t border-border">
+          <div className="flex items-center justify-between text-xs lg:text-sm">
             <span className="text-text-secondary">Category:</span>
-            <span className="font-medium text-text-primary">{product.category}</span>
+            <span className="font-medium text-text-primary">
+              {product.category}
+            </span>
           </div>
           {product.subcategory && (
-            <div className="flex items-center justify-between text-sm mt-1">
+            <div className="flex items-center justify-between text-xs lg:text-sm mt-1">
               <span className="text-text-secondary">Type:</span>
-              <span className="font-medium text-text-primary">{product.subcategory}</span>
+              <span className="font-medium text-text-primary">
+                {product.subcategory}
+              </span>
             </div>
           )}
-          <div className="flex items-center justify-between text-sm mt-1">
+          <div className="flex items-center justify-between text-xs lg:text-sm mt-1">
             <span className="text-text-secondary">Sizing:</span>
             <span className="font-medium text-text-primary">
-              {hasSizes ? 'Available' : 'Not applicable'}
+              {hasSizes ? "Available" : "Not applicable"}
             </span>
           </div>
         </div>
