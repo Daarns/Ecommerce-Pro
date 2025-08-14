@@ -234,7 +234,7 @@ export function CartContent() {
                   )}
 
                   {/* Price and Quantity */}
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
                     <div className="space-y-1">
                       <div className="text-lg font-bold text-primary">
                         {formatPrice(item.product.price)}
@@ -246,18 +246,16 @@ export function CartContent() {
                       )}
                     </div>
 
-                    {/* Simplified Quantity Controls */}
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center border border-border rounded-xl">
+                    {/* Quantity Controls */}
+                    <div className="flex items-center gap-2 w-full sm:w-auto">
+                      <div className="flex items-center border border-border rounded-xl w-full max-w-[120px] sm:max-w-none">
                         <button
                           onClick={() => handleQuantityChange(item.id, item.quantity, 'decrease', item.product.stock)}
                           disabled={item.quantity <= 1}
-                          className="p-2 hover:bg-surface-elevated transition-colors disabled:opacity-50"
+                          className="p-2 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center hover:bg-surface-elevated transition-colors disabled:opacity-50"
                         >
                           <Minus className="w-4 h-4" />
                         </button>
-                        
-                        {/* Simple Editable Quantity Input */}
                         {editingQuantity === item.id ? (
                           <input
                             type="text"
@@ -265,31 +263,29 @@ export function CartContent() {
                             onChange={(e) => handleQuantityInputChange(e.target.value)}
                             onBlur={() => handleQuantityInputBlur(item.id, item.product.stock)}
                             onKeyDown={(e) => handleQuantityInputKeyDown(e, item.id, item.product.stock)}
-                            className="w-16 py-2 text-sm font-medium text-center bg-transparent focus:outline-none focus:bg-background/50 rounded"
+                            className="w-10 sm:w-16 py-2 text-sm font-medium text-center bg-transparent focus:outline-none focus:bg-background/50 rounded"
                             autoFocus
                             maxLength="3"
                           />
                         ) : (
                           <button
                             onClick={() => handleQuantityClick(item.id, item.quantity)}
-                            className="px-4 py-2 text-sm font-medium min-w-[4rem] text-center hover:bg-surface-elevated transition-colors rounded"
+                            className="px-2 py-2 text-sm font-medium min-w-[2.5rem] text-center hover:bg-surface-elevated transition-colors rounded"
                             title="Click to edit quantity"
                           >
                             {item.quantity}
                           </button>
                         )}
-                        
                         <button
                           onClick={() => handleQuantityChange(item.id, item.quantity, 'increase', item.product.stock)}
                           disabled={item.quantity >= item.product.stock}
-                          className="p-2 hover:bg-surface-elevated transition-colors disabled:opacity-50"
+                          className="p-2 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center hover:bg-surface-elevated transition-colors disabled:opacity-50"
                         >
                           <Plus className="w-4 h-4" />
                         </button>
                       </div>
-                      
                       {/* Stock indicator */}
-                      <div className="text-xs text-text-muted">
+                      <div className="text-xs text-text-muted hidden sm:block">
                         Max: {item.product.stock}
                       </div>
                     </div>
