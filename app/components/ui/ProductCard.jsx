@@ -227,114 +227,110 @@ export function ProductCard({product, className, viewMode = "grid"}) {
 
   // Grid View (default)
   return (
-    <>
-      <div
-        className={cn(
-          "group bg-surface border border-border rounded-xl overflow-hidden hover:shadow-lg hover:border-primary transition-all duration-300",
-          // Remove hover:scale-105 on mobile
-          "sm:hover:scale-105",
-          className
-        )}
-      >
-        {/* Product Image */}
-        <div className="relative aspect-square overflow-hidden bg-background-secondary">
-          <Link href={`/products/${product.id}`}>
-            <Image
-              src={product.image}
-              alt={product.name}
-              width={300}
-              height={300}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            />
-          </Link>
+    <div className={cn(
+      "group bg-surface border border-border rounded-xl overflow-hidden hover:shadow-lg hover:border-primary transition-all duration-300",
+      "sm:hover:scale-105",
+      className
+    )}>
+      {/* Image Section - No changes needed */}
+      <div className="relative aspect-square overflow-hidden bg-background-secondary">
+        <Link href={`/products/${product.id}`}>
+          <Image
+            src={product.image}
+            alt={product.name}
+            width={300}
+            height={300}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          />
+        </Link>
 
-          {/* Discount Badge - Adjusted size for mobile */}
-          {product.originalPrice && (
-            <div className="absolute top-2 left-2 bg-error text-white px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-medium sm:font-bold">
-              -{getDiscountPercentage()}%
-            </div>
-          )}
-
-          {/* Wishlist Button - Always visible on mobile */}
-          <button
-            onClick={handleWishlist}
-            className={`
-              absolute top-2 right-2 w-7 h-7 sm:w-8 sm:h-8 bg-background/80 backdrop-blur-sm rounded-full 
-              flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 
-              transition-all duration-200 hover:bg-background hover:scale-110
-              ${isWishlisted ? "text-error" : "text-text-primary"}
-            `}
-            aria-label="Add to wishlist"
-          >
-            <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${isWishlisted ? "fill-current" : ""}`} />
-          </button>
-
-          {/* Quick Add Button - Hidden on mobile */}
-          <div className="absolute bottom-3 left-3 right-3 hidden sm:block opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-            <Button
-              onClick={handleQuickAddClick}
-              disabled={product.stock <= 0 || showSuccess}
-              size="sm"
-              className={`w-full ${
-                showSuccess
-                  ? "bg-success text-white"
-                  : "bg-background/90 backdrop-blur-sm text-text-primary hover:bg-primary hover:text-text-inverse"
-              } border border-border transition-all`}
-            >
-              {showSuccess ? (
-                <>
-                  <Check className="w-4 h-4 mr-2" />
-                  Added!
-                </>
-              ) : (
-                <>
-                  <ShoppingCart className="w-4 h-4 mr-2" />
-                  Quick Add
-                </>
-              )}
-            </Button>
+        {/* Discount Badge - Adjusted size for mobile */}
+        {product.originalPrice && (
+          <div className="absolute top-2 left-2 bg-error text-white px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-medium sm:font-bold">
+            -{getDiscountPercentage()}%
           </div>
+        )}
+
+        {/* Wishlist Button - Always visible on mobile */}
+        <button
+          onClick={handleWishlist}
+          className={`
+            absolute top-2 right-2 w-7 h-7 sm:w-8 sm:h-8 bg-background/80 backdrop-blur-sm rounded-full 
+            flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 
+            transition-all duration-200 hover:bg-background hover:scale-110
+            ${isWishlisted ? "text-error" : "text-text-primary"}
+          `}
+          aria-label="Add to wishlist"
+        >
+          <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${isWishlisted ? "fill-current" : ""}`} />
+        </button>
+
+        {/* Quick Add Button - Hidden on mobile */}
+        <div className="absolute bottom-3 left-3 right-3 hidden sm:block opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+          <Button
+            onClick={handleQuickAddClick}
+            disabled={product.stock <= 0 || showSuccess}
+            size="sm"
+            className={`w-full ${
+              showSuccess
+                ? "bg-success text-white"
+                : "bg-background/90 backdrop-blur-sm text-text-primary hover:bg-primary hover:text-text-inverse"
+            } border border-border transition-all`}
+          >
+            {showSuccess ? (
+              <>
+                <Check className="w-4 h-4 mr-2" />
+                Added!
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Quick Add
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
+
+      {/* Content Section - New Layout */}
+      <div className="flex flex-col h-[160px] sm:h-[180px] p-3 sm:p-4">
+        {/* Product Name - Fixed Height */}
+        <Link href={`/products/${product.id}`}>
+          <h3 className="font-medium text-sm sm:text-base text-text-primary group-hover:text-primary transition-colors line-clamp-2 min-h-[32px] sm:min-h-[40px]">
+            {product.name}
+          </h3>
+        </Link>
+
+        {/* Price Section - Original Price First */}
+        <div className="flex flex-col mt-2">
+          {product.originalPrice && (
+            <span className="text-xs sm:text-sm text-text-muted line-through">
+              {formatPrice(product.originalPrice)}
+            </span>
+          )}
+          <span className="text-sm sm:text-base font-bold text-primary">
+            {formatPrice(product.price)}
+          </span>
         </div>
 
-        {/* Product Info - Adjusted padding and typography for mobile */}
-        <div className="p-3 sm:p-4">
-          <Link href={`/products/${product.id}`}>
-            <h3 className="font-medium sm:font-semibold text-sm sm:text-base text-text-primary group-hover:text-primary transition-colors line-clamp-2 mb-1.5 sm:mb-2">
-              {product.name}
-            </h3>
-          </Link>
-
-          {/* Price Section - Stacked layout on mobile */}
-          <div className="space-y-1 sm:space-y-0 sm:flex sm:items-center sm:gap-2">
-            <span className="text-base sm:text-lg font-bold text-primary block">
-              {formatPrice(product.price)}
-            </span>
-            {product.originalPrice && (
-              <span className="text-xs sm:text-sm text-text-muted line-through block">
-                {formatPrice(product.originalPrice)}
-              </span>
-            )}
-          </div>
-
-          {/* Stock Status - Smaller on mobile */}
+        {/* Stock Status - Fixed Position */}
+        <div className="flex-grow">
           {product.stock <= 10 && (
             <div className="flex items-center gap-1.5 mt-2">
-              <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
+              <div className={`w-1.5 h-1.5 rounded-full ${
                 product.stock > 0 ? "bg-warning" : "bg-error"
-              }`}></div>
+              }`} />
               <span className={`text-[10px] sm:text-xs font-medium ${
                 product.stock > 0 ? "text-warning" : "text-error"
               }`}>
-                {product.stock > 0
-                  ? `Only ${product.stock} left`
-                  : "Out of Stock"}
+                {product.stock > 0 ? `Only ${product.stock} left` : "Out of Stock"}
               </span>
             </div>
           )}
         </div>
 
-        {/* Add to Cart Button for Mobile */}
-        <div className="px-3 pb-3 block sm:hidden">
+        {/* Add to Cart Button - Fixed Position */}
+        <div className="mt-auto">
           <Button
             onClick={handleQuickAddClick}
             disabled={product.stock <= 0 || showSuccess}
@@ -357,7 +353,7 @@ export function ProductCard({product, className, viewMode = "grid"}) {
           isAdding={isAdding}
         />
       )}
-    </>
+    </div>
   );
 }
 
