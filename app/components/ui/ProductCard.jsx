@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {ShoppingCart, Heart, Check} from "lucide-react";
 import {useCart} from "@/app/contexts/CartContext";
-import {formatPrice, calculateDiscount, cn} from "@/app/lib/utils";
+import {formatPrice, calculateDiscount, cn, generateSlug} from "@/app/lib/utils";
 import {Button} from "@/app/components/ui/Button";
 import {QuickAddModal} from "./modal/QuickAddModal";
 
@@ -81,7 +81,7 @@ export function ProductCard({product, className, viewMode = "grid"}) {
     )}>
       {/* Image Section */}
       <div className="relative aspect-square overflow-hidden bg-background-secondary">
-        <Link href={`/products/${product.id}`}>
+        <Link href={`/products/${product.slug || generateSlug(product.name)}`}>
           <Image
             src={product.image}
             alt={product.name}
@@ -114,7 +114,7 @@ export function ProductCard({product, className, viewMode = "grid"}) {
 
       {/* Content Section */}
       <div className="flex flex-col h-[160px] sm:h-[180px] p-3 sm:p-4">
-        <Link href={`/products/${product.id}`}>
+        <Link href={`/products/${product.slug || generateSlug(product.name)}`}>
           <h3 className="font-medium text-sm sm:text-base text-text-primary group-hover:text-primary transition-colors line-clamp-2">
             {product.name}
           </h3>
