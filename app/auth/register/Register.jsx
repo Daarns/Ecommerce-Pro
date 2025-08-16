@@ -147,7 +147,7 @@ export default function RegisterPage() {
             {/* Header */}
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-success to-success/80 rounded-2xl mb-6 shadow-lg">
-                <User className="w-8 h-8 text-white" />
+                <User className="w-8 h-8 text-primary-text" />
               </div>
               <h1 className="text-3xl font-bold text-text-primary mb-2">Join EcommercePro</h1>
               <p className="text-text-muted text-sm">Create your account and start shopping</p>
@@ -336,7 +336,7 @@ export default function RegisterPage() {
               {/* Register Button */}
               <Button
                 type="submit"
-                className="w-full h-12 bg-gradient-to-r from-success to-success/80 hover:from-success/90 hover:to-success/70 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
+                className="w-full h-12 bg-gradient-to-r from-success to-success/80 hover:from-success/90 hover:to-success/70 text-primary-text font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
                 disabled={loading}
               >
                 {loading ? (
