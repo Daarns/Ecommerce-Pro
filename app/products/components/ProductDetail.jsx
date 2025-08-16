@@ -339,7 +339,7 @@ export function ProductDetail({product}) {
               </span>
 
               {product.originalPrice && (
-                <span className="px-1.5 py-0.5 bg-error text-white text-xs font-bold rounded">
+                <span className="px-1.5 py-0.5 bg-error text-primary-text text-xs font-bold rounded">
                   -{getDiscountPercentage()}%
                 </span>
               )}
@@ -390,7 +390,7 @@ export function ProductDetail({product}) {
                     onClick={() => setSelectedColor(color)}
                     className={`px-3 lg:px-4 py-2 border rounded-lg lg:rounded-xl text-sm font-medium transition-all ${
                       selectedColor === color
-                        ? "border-primary bg-primary text-white"
+                        ? "border-primary bg-primary text-primary-text"
                         : "border-border text-text-secondary hover:border-primary hover:text-primary"
                     }`}
                   >
@@ -415,7 +415,7 @@ export function ProductDetail({product}) {
                     disabled={sizeOption.stock === 0}
                     className={`py-3 px-2 text-sm border-2 rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed relative ${
                       selectedSize === sizeOption.value
-                        ? "border-primary bg-primary text-white"
+                        ? "border-primary bg-primary text-primary-text"
                         : sizeOption.stock > 0
                         ? "border-border text-text-secondary hover:border-primary hover:text-primary"
                         : "border-border text-text-muted"
@@ -463,7 +463,7 @@ export function ProductDetail({product}) {
                     disabled={variant.stock === 0}
                     className={`relative w-full p-3 text-left border-2 rounded-lg lg:rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
                       selectedVariant?.value === variant.value
-                        ? "border-primary bg-primary text-white"
+                        ? "border-primary bg-primary text-primary-text"
                         : variant.stock > 0
                         ? "border-border text-text-secondary hover:border-primary hover:text-primary"
                         : "border-border text-text-muted"
@@ -597,8 +597,8 @@ export function ProductDetail({product}) {
             disabled={!canAddToCart() || isAdding}
             className={`flex-1 h-11 lg:h-12 text-sm lg:text-base transition-all ${
               showSuccess
-                ? "bg-success hover:bg-success text-white"
-                : "bg-primary hover:bg-primary-hover text-white"
+                ? "bg-success hover:bg-success text-primary-text"
+                : "bg-primary hover:bg-primary-hover text-primary-text"
             }`}
           >
             {isAdding ? (
@@ -633,7 +633,7 @@ export function ProductDetail({product}) {
             onClick={handleWishlist}
             className={`h-11 lg:h-12 px-3 lg:px-4 ${
               isWishlisted
-                ? "border-error text-error hover:bg-error hover:text-white"
+                ? "border-error text-error hover:bg-error hover:text-primary-text"
                 : "border-border text-text-secondary hover:text-text-primary"
             }`}
           >
