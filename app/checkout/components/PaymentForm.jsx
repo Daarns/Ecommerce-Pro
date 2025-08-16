@@ -76,7 +76,7 @@ export function PaymentForm() {
               
               <div className="flex items-center gap-4 flex-1">
                 <div className={`p-2 rounded-lg ${
-                  paymentMethod === method.id ? 'bg-primary text-white' : 'bg-background text-text-muted'
+                  paymentMethod === method.id ? 'bg-primary text-primary-text' : 'bg-background text-text-muted'
                 }`}>
                   <method.icon className="w-5 h-5" />
                 </div>
@@ -87,7 +87,7 @@ export function PaymentForm() {
                       {method.name}
                     </span>
                     {method.popular && (
-                      <span className="px-2 py-1 bg-accent text-white text-xs font-bold rounded">
+                      <span className="px-2 py-1 bg-accent text-primary-text text-xs font-bold rounded">
                         Popular
                       </span>
                     )}
@@ -144,7 +144,7 @@ export function PaymentForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="flex-1 bg-primary hover:bg-primary-hover text-white"
+            className="flex-1 bg-primary hover:bg-primary-hover text-primary-text"
           >
             {isSubmitting ? (
               <>
