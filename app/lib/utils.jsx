@@ -5,6 +5,13 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs))
 }
 
+export function generateSlug(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)+/g, '');
+}
+
 export function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
