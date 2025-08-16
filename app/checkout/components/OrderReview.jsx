@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useCheckout } from '@/app/contexts/CheckoutContext'
 import { useCart } from '@/app/contexts/CartContext'
-import { useOrders } from '@/app/contexts/OrderContext' // Add this
+import { useOrders } from '@/app/contexts/OrderContext'
 import { Button } from '@/app/components/ui/Button'
 import { ArrowLeft, Check, Package } from 'lucide-react'
 
@@ -150,7 +150,7 @@ export function OrderReview() {
           <Button
             onClick={handlePlaceOrder}
             disabled={isProcessing}
-            className="flex-1 bg-primary hover:bg-primary-hover text-white"
+            className="flex-1 bg-primary hover:bg-primary-hover text-primary-text"
           >
             {isProcessing ? (
               <>
