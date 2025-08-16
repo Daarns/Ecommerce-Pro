@@ -1,7 +1,10 @@
+import {generateSlug} from "@/app/lib/utils";
+
 export const featuredProducts = [
   {
     id: 1,
     name: "iPhone 15 Pro Max",
+    slug: "iPhone-15-Pro-Max",
     price: 20000000,
     originalPrice: 22000000,
     image:
@@ -30,6 +33,7 @@ export const featuredProducts = [
   {
     id: 2,
     name: "Samsung Galaxy S24 Ultra",
+    slug: "Samsung-Galaxy-S24-Ultra",
     price: 18000000,
     originalPrice: 19500000,
     image:
@@ -55,6 +59,7 @@ export const featuredProducts = [
   {
     id: 3,
     name: "MacBook Air M3",
+    slug: "MacBook-Air-M3",
     price: 25000000,
     originalPrice: 27000000,
     image:
@@ -74,6 +79,7 @@ export const featuredProducts = [
   {
     id: 4,
     name: "AirPods Pro 2nd Gen",
+    slug: "AirPods-Pro-2nd-Gen",
     price: 3500000,
     originalPrice: 4000000,
     image:
@@ -89,6 +95,7 @@ export const featuredProducts = [
   {
     id: 5,
     name: "Nike Air Jordan 1",
+    slug: "Nike-Air-Jordan-1",
     price: 2500000,
     originalPrice: 2800000,
     image:
@@ -116,6 +123,7 @@ export const featuredProducts = [
   {
     id: 6,
     name: "Adidas Ultraboost 22",
+    slug: "Adidas-Ultraboost-22",
     price: 2200000,
     originalPrice: 2500000,
     image:
@@ -143,6 +151,7 @@ export const featuredProducts = [
   {
     id: 7,
     name: "PlayStation 5 Console",
+    slug: "PlayStation-5-Console",
     price: 8500000,
     originalPrice: 9200000,
     image:
@@ -163,6 +172,7 @@ export const featuredProducts = [
   {
     id: 8,
     name: "Nintendo Switch OLED",
+    slug: "Nintendo-Switch-OLED",
     price: 4200000,
     originalPrice: 4800000,
     image:
@@ -174,10 +184,10 @@ export const featuredProducts = [
     stock: 22,
     colors: ["Neon Blue/Red", "White"],
   },
-  // Menambah beberapa produk Fashion dengan sizes
   {
     id: 9,
     name: "Nike Dri-FIT T-Shirt",
+    slug: "Nike-Dri-FIT-T-Shirt",
     price: 450000,
     originalPrice: 500000,
     image:
@@ -201,6 +211,7 @@ export const featuredProducts = [
   {
     id: 10,
     name: "Adidas 3-Stripes Track Pants",
+    slug: "Adidas-3-Stripes-Track-Pants",
     price: 650000,
     originalPrice: 750000,
     image:
@@ -224,6 +235,7 @@ export const featuredProducts = [
   {
     id: 11,
     name: "H&M Women's Blouse",
+    slug: "H&M-Women-Blouse",
     price: 350000,
     originalPrice: 400000,
     image: "/products/h&m-women-blouse.jpg",
@@ -247,6 +259,7 @@ export const featuredProducts = [
   {
     id: 12,
     name: "Kids Marvel Spider-Man T-Shirt",
+    slug: "Kids-Marvel-Spider-Man-T-Shirt",
     price: 200000,
     originalPrice: 250000,
     image: "/products/spiderman.jpg",
@@ -267,10 +280,10 @@ export const featuredProducts = [
     colors: ["Red", "Blue", "Black"],
   },
 
-  // PRODUK FASHION BARU - CROP TOPS
   {
     id: 13,
     name: "Basic Cotton Crop Top",
+    slug: "Basic-Cotton-Crop-Top",
     price: 125000,
     originalPrice: 150000,
     image: "/products/cotton-croptop.webp",
@@ -294,6 +307,7 @@ export const featuredProducts = [
   {
     id: 14,
     name: "Ribbed Long Sleeve Crop Top",
+    slug: "Ribbed-Long-Sleeve-Crop-Top",
     price: 180000,
     originalPrice: 220000,
     image: "/products/Ribbed-Crop-Top-Long-Sleeve.webp",
@@ -315,10 +329,10 @@ export const featuredProducts = [
     colors: ["Black", "Camel", "Cream", "Olive"],
   },
 
-  // HOT PANTS
   {
     id: 15,
     name: "High Waisted Denim Hot Pants",
+    slug: "High-Waisted-Denim-Hot-Pants",
     price: 220000,
     originalPrice: 280000,
     image: "/products/denim-hot-pants.jpg",
@@ -342,6 +356,7 @@ export const featuredProducts = [
   {
     id: 16,
     name: "Athletic Hot Pants",
+    slug: "Athletic-Hot-Pants",
     price: 160000,
     originalPrice: 200000,
     image:
@@ -363,10 +378,10 @@ export const featuredProducts = [
     colors: ["Black", "Gray", "Navy", "Pink"],
   },
 
-  // HOODIES
   {
     id: 17,
     name: "Oversized Hoodie",
+    slug: "Oversized-Hoodie",
     price: 320000,
     originalPrice: 400000,
     image:
@@ -391,6 +406,7 @@ export const featuredProducts = [
   {
     id: 18,
     name: "Women's Cropped Hoodie",
+    slug: "Womens-Cropped-Hoodie",
     price: 280000,
     originalPrice: 350000,
     image: "/products/ASML-Hoodie-Womens.webp",
@@ -412,10 +428,10 @@ export const featuredProducts = [
     colors: ["Cream", "Pink", "Lavender", "Sage Green"],
   },
 
-  // JEANS
   {
     id: 19,
     name: "Skinny Fit Jeans",
+    slug: "Skinny-Fit-Jeans",
     price: 450000,
     originalPrice: 550000,
     image:
@@ -439,6 +455,7 @@ export const featuredProducts = [
   {
     id: 20,
     name: "Straight Leg Jeans",
+    slug: "Straight-Leg-Jeans",
     price: 480000,
     originalPrice: 600000,
     image:
@@ -460,10 +477,10 @@ export const featuredProducts = [
     colors: ["Dark Blue", "Light Blue", "Black"],
   },
 
-  // TANK TOPS
   {
     id: 21,
     name: "Basic Tank Top",
+    slug: "Basic-Tank-Top",
     price: 95000,
     originalPrice: 120000,
     image: "/products/tanktop.jpg",
@@ -484,7 +501,10 @@ export const featuredProducts = [
     ],
     colors: ["White", "Black", "Gray", "Pink", "Blue"],
   },
-];
+].map(product => ({
+  ...product,
+  slug: product.slug || generateSlug(product.name)
+}));
 
 // Categories data dengan informasi apakah kategori memiliki sizes
 export const categories = [
@@ -554,7 +574,7 @@ export const categories = [
   },
 ];
 
-// Helper function untuk mendapatkan info kategori - DIPERBAIKI
+// Helper function untuk mendapatkan info kategori 
 export const getCategoryInfo = (categoryName) => {
   // Pengecekan null/undefined
   if (!categoryName || typeof categoryName !== "string") {
@@ -567,7 +587,7 @@ export const getCategoryInfo = (categoryName) => {
   );
 };
 
-// Helper function untuk mengecek apakah kategori memiliki sizes - DIPERBAIKI
+// Helper function untuk mengecek apakah kategori memiliki sizes
 export const categoryHasSizes = (categoryName) => {
   const categoryInfo = getCategoryInfo(categoryName);
   return categoryInfo ? categoryInfo.hasSizes : false;
