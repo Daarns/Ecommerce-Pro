@@ -160,7 +160,7 @@ export function CartSidebar() {
                 </div>
                 <div className="mt-2">
                   <Link href="/checkout" onClick={toggleCart}>
-                    <Button className="w-full bg-primary hover:bg-primary-hover text-white">
+                    <Button className="w-full bg-primary hover:bg-primary-hover text-primary-text">
                       Checkout
                     </Button>
                   </Link>
