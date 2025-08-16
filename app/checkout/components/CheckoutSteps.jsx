@@ -30,35 +30,35 @@ export function CheckoutSteps() {
   ]
 
   return (
-    <div className="bg-surface border border-border rounded-2xl p-6">
+    <div className="bg-surface border border-border rounded-2xl p-4 sm:p-6">
       <nav aria-label="Checkout progress">
-        <ol className="flex items-center justify-between">
+        <ol className="flex items-start sm:items-center justify-between">
           {steps.map((step, stepIdx) => (
             <li key={step.name} className="relative flex-1">
-              <div className="flex items-center">
+              <div className="flex flex-col sm:flex-row items-center">
                 {/* Step Circle */}
                 <div className="relative flex items-center justify-center">
                   <div
-                    className={`flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all duration-200 ${
+                    className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 transition-all duration-200 ${
                       step.id < currentStep
-                        ? 'bg-primary border-primary text-white'
+                        ? 'bg-primary border-primary text-primary-text'
                         : step.id === currentStep
-                        ? 'bg-primary border-primary text-white'
+                        ? 'bg-primary border-primary text-primary-text'
                         : 'bg-background border-border text-text-muted hover:border-primary/40'
                     }`}
                   >
                     {step.id < currentStep ? (
-                      <Check className="h-6 w-6" />
+                      <Check className="h-5 w-5 sm:h-6 sm:w-6" />
                     ) : (
-                      <step.icon className="h-6 w-6" />
+                      <step.icon className="h-5 w-5 sm:h-6 sm:w-6" />
                     )}
                   </div>
                 </div>
 
                 {/* Step Content */}
-                <div className="ml-4 min-w-0 flex-1">
+                <div className="mt-2 sm:mt-0 sm:ml-4 min-w-0 flex-1">
                   <p
-                    className={`text-sm font-semibold transition-colors ${
+                    className={`text-xs sm:text-sm font-semibold text-center sm:text-left transition-colors ${
                       step.id <= currentStep
                         ? 'text-text-primary'
                         : 'text-text-muted'
@@ -67,7 +67,7 @@ export function CheckoutSteps() {
                     {step.name}
                   </p>
                   <p
-                    className={`text-sm transition-colors ${
+                    className={`text-[10px] sm:text-sm text-center sm:text-left transition-colors ${
                       step.id <= currentStep
                         ? 'text-text-secondary'
                         : 'text-text-muted'
@@ -80,7 +80,7 @@ export function CheckoutSteps() {
 
               {/* Connector Line */}
               {stepIdx !== steps.length - 1 && (
-                <div className="absolute top-6 left-6 w-full flex">
+                <div className="absolute hidden sm:flex top-6 left-6 w-full">
                   <div
                     className={`h-0.5 flex-1 transition-all duration-500 ${
                       step.id < currentStep
@@ -88,6 +88,19 @@ export function CheckoutSteps() {
                         : 'bg-border'
                     }`}
                     style={{ marginLeft: '3rem' }}
+                  />
+                </div>
+              )}
+
+              {/* Mobile Connector Line */}
+              {stepIdx !== steps.length - 1 && (
+                <div className="absolute sm:hidden top-5 left-[50%] w-[calc(100%-1rem)]">
+                  <div
+                    className={`h-0.5 transition-all duration-500 ${
+                      step.id < currentStep
+                        ? 'bg-primary'
+                        : 'bg-border'
+                    }`}
                   />
                 </div>
               )}
