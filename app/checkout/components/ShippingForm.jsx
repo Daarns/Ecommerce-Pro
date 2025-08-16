@@ -272,7 +272,7 @@ export function ShippingForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-primary hover:bg-primary-hover text-white py-3 font-medium"
+            className="w-full bg-primary hover:bg-primary-hover text-primary-text py-3 font-medium"
           >
             {isSubmitting ? (
               <>
