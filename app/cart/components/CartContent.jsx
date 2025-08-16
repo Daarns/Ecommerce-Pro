@@ -106,7 +106,7 @@ export function CartContent() {
           Looks like you haven't added any items to your cart yet. Start shopping to fill it up!
         </p>
         <Link href="/products">
-          <Button className="bg-primary hover:bg-primary-hover text-white">
+          <Button className="bg-primary hover:bg-primary-hover text-primary-text">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Continue Shopping
           </Button>
@@ -344,7 +344,7 @@ export function CartContent() {
             
             <div className="mt-6">
               <Link href="/checkout">
-                <Button className="w-full bg-primary hover:bg-primary-hover text-white">
+                <Button className="w-full bg-primary hover:bg-primary-hover text-primary-text">
                   Proceed to Checkout
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
