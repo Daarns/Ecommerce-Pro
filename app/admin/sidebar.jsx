@@ -1,8 +1,9 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart2, ShoppingBag, Users, Package, Menu, ChevronLeft, ChevronRight } from "lucide-react";
+import { BarChart2, ShoppingBag, Users, Package, Menu, ChevronLeft, ChevronRight, LogOut } from "lucide-react";
+import { useSidebar } from './contexts/SidebarContext';
 
 const nav = [
   { name: "Dashboard", href: "/admin/dashboard", icon: <BarChart2 /> },
@@ -13,131 +14,182 @@ const nav = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(true);
+  const { isOpen, setIsOpen, isMobile } = useSidebar();
 
   return (
     <>
-      {/* Mobile Menu Button - hanya muncul di mobile ketika sidebar tertutup */}
-      {!isOpen && (
+      {/* Mobile Menu Button */}
+      {isMobile && !isOpen && (
         <button
-          className="fixed top-4 left-4 z-50 lg:hidden bg-slate-800 rounded-lg p-2 shadow-lg"
+          className="fixed top-4 left-4 z-50 bg-slate-900 text-white rounded-xl p-3 shadow-lg border border-slate-700"
           onClick={() => setIsOpen(true)}
-          aria-label="Open sidebar"
+          aria-label="Open menu"
         >
-          <Menu className="w-5 h-5 text-white" />
+          <Menu className="w-5 h-5" />
         </button>
       )}
-
-      {/* Desktop Show Button - ketika sidebar collapsed */}
-      {!isOpen && (
-        <button
-          className="hidden lg:block fixed top-4 left-4 z-50 bg-slate-800 rounded-lg p-2 shadow-lg"
-          onClick={() => setIsOpen(true)}
-          aria-label="Show sidebar"
-        >
-          <ChevronRight className="w-5 h-5 text-white" />
-        </button>
-      )}
-
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed inset-y-0 left-0 z-40 
-          bg-slate-900 text-white flex flex-col
-          transform transition-all duration-300 ease-in-out
-          ${isOpen ? 'translate-x-0 w-64' : '-translate-x-full w-0 lg:translate-x-0 lg:w-0'}
-          overflow-hidden
-        `}
-      >
-        {/* Header dengan Toggle Button */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-700 flex-shrink-0">
-          <h1 className={`
-            font-bold text-xl transition-all duration-300 whitespace-nowrap
-            ${isOpen ? 'opacity-100' : 'opacity-0'}
-          `}>
-            Admin Panel
-          </h1>
-          
-          <button
-            onClick={() => setIsOpen(false)}
-            className={`
-              p-1 rounded-lg hover:bg-slate-700 transition-colors flex-shrink-0
-              ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}
-            `}
-            aria-label="Hide sidebar"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Navigation */}
-        <nav className={`
-          flex-1 p-4 space-y-2 transition-all duration-300
-          ${isOpen ? 'opacity-100' : 'opacity-0'}
-          overflow-y-auto
-        `}>
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`
-                flex items-center gap-3 px-4 py-3 rounded-lg
-                font-medium transition-all duration-200
-                hover:bg-slate-700
-                ${pathname === item.href
-                  ? 'bg-blue-600 text-white'
-                  : 'text-slate-300'
-                }
-              `}
-              onClick={() => {
-                // Auto close on mobile
-                if (window.innerWidth < 1024) {
-                  setIsOpen(false);
-                }
-              }}
-            >
-              <span className="text-lg flex-shrink-0">{item.icon}</span>
-              <span className="whitespace-nowrap">{item.name}</span>
-            </Link>
-          ))}
-        </nav>
-
-        {/* User Profile */}
-        <div className={`
-          p-4 border-t border-slate-700 flex-shrink-0
-          transition-all duration-300
-          ${isOpen ? 'opacity-100' : 'opacity-0'}
-        `}>
-          <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 cursor-pointer">
-            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-sm font-bold">A</span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium text-white">Admin</div>
-              <div className="text-xs text-slate-400 truncate">admin@example.com</div>
-            </div>
-          </div>
-        </div>
-      </aside>
 
       {/* Mobile Overlay */}
-      {isOpen && (
+      {isMobile && isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-200"
           onClick={() => setIsOpen(false)}
         />
       )}
 
-      {/* Main Content Push - untuk memberikan space di desktop */}
-      <div 
+      {/* Sidebar - Fixed height, tidak mengikuti page content */}
+      <aside
         className={`
-          transition-all duration-300 ease-in-out
-          ${isOpen ? 'lg:ml-64' : 'lg:ml-0'}
+          fixed top-0 left-0 z-50 h-screen
+          bg-slate-900 text-white flex flex-col
+          transition-all duration-200 ease-out shadow-2xl
+          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+          ${isOpen ? 'w-72' : 'lg:w-16'}
         `}
-        style={{ minHeight: '100vh' }}
+        style={{
+          width: isMobile ? (isOpen ? '288px' : '0px') : (isOpen ? '288px' : '64px')
+        }}
       >
-        {/* Konten dari page.jsx akan render di sini melalui children atau layout wrapper */}
-      </div>
+        {/* Header - Fixed height */}
+        <div className={`flex items-center p-4 border-b border-slate-700 h-16 flex-shrink-0 ${
+          isOpen ? 'justify-between' : 'justify-center'
+        }`}>
+          <div className={`transition-all duration-200 ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 lg:opacity-100 lg:scale-100'}`}>
+            {isOpen ? (
+              <h1 className="font-bold text-xl whitespace-nowrap">Admin Panel</h1>
+            ) : (
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span className="text-sm font-bold">A</span>
+              </div>
+            )}
+          </div>
+          
+          {/* Toggle Button */}
+          {!isMobile && (
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className={`p-1.5 rounded-lg hover:bg-slate-700 transition-all duration-200 ${
+                isOpen ? 'opacity-100' : 'opacity-0 lg:opacity-100'
+              }`}
+              aria-label="Toggle sidebar"
+            >
+              {isOpen ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+            </button>
+          )}
+
+          {/* Mobile Close Button */}
+          {isMobile && (
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1.5 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+              aria-label="Close menu"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        {/* Navigation - Tanpa horizontal scroll */}
+        <nav className={`flex-1 overflow-y-auto overflow-x-hidden ${isOpen ? 'p-4' : 'px-2 py-4'}`}>
+          <div className="space-y-1">
+            {nav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`
+                  relative flex items-center font-medium transition-all duration-200 group
+                  ${isOpen 
+                    ? 'gap-3 px-3 py-3 rounded-xl' 
+                    : 'justify-center p-3 rounded-xl mx-auto w-12 h-12'
+                  }
+                  ${pathname === item.href
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+                  }
+                `}
+                onClick={() => {
+                  if (isMobile) {
+                    setIsOpen(false);
+                  }
+                }}
+                title={!isOpen ? item.name : ''}
+              >
+                <span className={`flex-shrink-0 transition-all duration-200 ${
+                  isOpen ? 'text-lg' : 'text-xl'
+                }`}>
+                  {item.icon}
+                </span>
+                {isOpen && (
+                  <span className="transition-all duration-200 whitespace-nowrap">
+                    {item.name}
+                  </span>
+                )}
+                
+                {/* Tooltip for collapsed state */}
+                {!isOpen && !isMobile && (
+                  <div className="absolute left-full ml-2 px-2 py-1 bg-slate-700 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
+                    {item.name}
+                  </div>
+                )}
+              </Link>
+            ))}
+          </div>
+        </nav>
+
+        {/* User Profile - Fixed at bottom */}
+        <div className={`border-t border-slate-700 flex-shrink-0 overflow-hidden ${isOpen ? 'p-4' : 'p-2'}`}>
+          <div className={`
+            flex items-center rounded-xl hover:bg-slate-700 cursor-pointer 
+            transition-all duration-200 group relative
+            ${isOpen 
+              ? 'gap-3 px-3 py-3' 
+              : 'justify-center p-3 mx-auto w-12 h-12'
+            }
+          `}>
+            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <span className="text-xs font-bold">A</span>
+            </div>
+            {isOpen && (
+              <div className="flex-1 min-w-0 transition-all duration-200">
+                <div className="text-sm font-medium text-white whitespace-nowrap">Admin User</div>
+                <div className="text-xs text-slate-400 truncate">admin@example.com</div>
+              </div>
+            )}
+            
+            {/* Tooltip for collapsed state */}
+            {!isOpen && !isMobile && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-slate-700 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
+                Admin User
+              </div>
+            )}
+          </div>
+          
+          {/* Logout Button */}
+          <button className={`
+            w-full flex items-center font-medium rounded-xl
+            text-slate-300 hover:bg-red-600 hover:text-white 
+            transition-all duration-200 group relative
+            ${isOpen 
+              ? 'gap-3 px-3 py-3 mt-2' 
+              : 'justify-center p-3 mx-auto w-12 h-12 mt-1'
+            }
+          `}>
+            <LogOut className="w-5 h-5 flex-shrink-0" />
+            {isOpen && (
+              <span className="transition-all duration-200 whitespace-nowrap">
+                Logout
+              </span>
+            )}
+            
+            {/* Tooltip for collapsed state */}
+            {!isOpen && !isMobile && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-slate-700 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
+                Logout
+              </div>
+            )}
+          </button>
+        </div>
+      </aside>
     </>
   );
 }
