@@ -37,22 +37,34 @@ export default function Sidebar() {
         />
       )}
 
-      {/* Sidebar - Fixed height, tidak mengikuti page content */}
+      {/* Sidebar */}
       <aside
         className={`
           fixed top-0 left-0 z-50 h-screen
           bg-slate-900 text-white flex flex-col
           transition-all duration-200 ease-out shadow-2xl
-          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-          ${isOpen ? 'w-72' : 'lg:w-16'}
+          ${isMobile 
+            ? (isOpen 
+                ? 'translate-x-0 w-64 visible opacity-100' 
+                : '-translate-x-full w-0 invisible opacity-0'
+              )
+            : (isOpen ? 'translate-x-0 w-72' : 'translate-x-0 w-16')
+          }
         `}
         style={{
-          width: isMobile ? (isOpen ? '288px' : '0px') : (isOpen ? '288px' : '64px')
+          // Force complete hiding on mobile
+          ...(isMobile && !isOpen && {
+            pointerEvents: 'none',
+            visibility: 'hidden',
+            transform: 'translateX(-100%)',
+            width: '0px',
+            opacity: 0
+          })
         }}
       >
-        {/* Header - Fixed height */}
-        <div className={`flex items-center p-4 border-b border-slate-700 h-16 flex-shrink-0 ${
-          isOpen ? 'justify-between' : 'justify-center'
+        {/* Header */}
+        <div className={`flex items-center border-b border-slate-700 h-16 flex-shrink-0 ${
+          isOpen ? 'justify-between px-4' : 'justify-center px-2'
         }`}>
           <div className={`transition-all duration-200 ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 lg:opacity-100 lg:scale-100'}`}>
             {isOpen ? (
@@ -64,7 +76,7 @@ export default function Sidebar() {
             )}
           </div>
           
-          {/* Toggle Button */}
+          {/* Toggle Button - Hidden on mobile when closed */}
           {!isMobile && (
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -78,7 +90,7 @@ export default function Sidebar() {
           )}
 
           {/* Mobile Close Button */}
-          {isMobile && (
+          {isMobile && isOpen && (
             <button
               onClick={() => setIsOpen(false)}
               className="p-1.5 rounded-lg hover:bg-slate-700 transition-colors duration-200"
@@ -89,7 +101,7 @@ export default function Sidebar() {
           )}
         </div>
 
-        {/* Navigation - Tanpa horizontal scroll */}
+        {/* Navigation */}
         <nav className={`flex-1 overflow-y-auto overflow-x-hidden ${isOpen ? 'p-4' : 'px-2 py-4'}`}>
           <div className="space-y-1">
             {nav.map((item) => (
@@ -125,7 +137,7 @@ export default function Sidebar() {
                   </span>
                 )}
                 
-                {/* Tooltip for collapsed state */}
+                {/* Tooltip for collapsed state - Hidden on mobile */}
                 {!isOpen && !isMobile && (
                   <div className="absolute left-full ml-2 px-2 py-1 bg-slate-700 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
                     {item.name}
@@ -136,7 +148,7 @@ export default function Sidebar() {
           </div>
         </nav>
 
-        {/* User Profile - Fixed at bottom */}
+        {/* User Profile */}
         <div className={`border-t border-slate-700 flex-shrink-0 overflow-hidden ${isOpen ? 'p-4' : 'p-2'}`}>
           <div className={`
             flex items-center rounded-xl hover:bg-slate-700 cursor-pointer 
