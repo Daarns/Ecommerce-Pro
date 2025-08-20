@@ -23,7 +23,7 @@ const statusIcons = {
 
 // Custom Dropdown Component
 const CustomSelect = ({ value, onChange, options, placeholder, className = "" }) => {
-  const [isOpen, setIsOpen] = useState(false);a
+  const [isOpen, setIsOpen] = useState(false);
   
   const selectedOption = options.find(opt => opt.value === value);
   
